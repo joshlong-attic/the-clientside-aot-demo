@@ -62,7 +62,7 @@ class CustomerGraphqlController {
 }
 
 @Configuration
-@ImportRuntimeHints({GraphqlConfiguration.GraphqlRuntimeHintsRegistrar.class,
+@ImportRuntimeHints({
         GraphqlConfiguration.GraphqlControllerRuntimeHintsRegistrar.class})
 class GraphqlConfiguration {
 
@@ -73,47 +73,48 @@ class GraphqlConfiguration {
 
         @Override
         public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
+            Set.of("graphql", "graphiql", "graph*ql/*.*").forEach(hints.resources()::registerPattern);
             Set.of(CustomerGraphqlController.class, Customer.class)
                     .forEach(c -> hints.reflection().registerType(c, MemberCategory.values()));
         }
     }
 
-    static class GraphqlRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
-
-        @Override
-        public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
-            var values = MemberCategory.values();
-            Set.of("graphql", "graphiql", "graph*ql/*.*").forEach(hints.resources()::registerPattern);
-            Set.of("i18n/Validation.properties", "i18n/Validation", "i18n/Execution.properties", "i18n/General.properties")
-                    .forEach(r -> hints.resources().registerResourceBundle(r));
-            Set.of("graphql.analysis.QueryTraversalContext", "graphql.schema.idl.SchemaParseOrder")
-                    .forEach(typeName -> hints.reflection().registerType(TypeReference.of(typeName), values));
-            Set.of(
-                            Argument.class, ArrayValue.class, Boolean.class, BooleanValue.class, DataFetchingEnvironment.class,
-                            Directive.class, DirectiveDefinition.class, DirectiveLocation.class, Document.class,
-                            EnumTypeDefinition.class, EnumTypeExtensionDefinition.class, EnumValue.class, EnumValueDefinition.class,
-                            Execution.class, Field.class, FieldDefinition.class, FloatValue.class, FragmentDefinition.class,
-                            FragmentSpread.class, GraphQL.class, GraphQLArgument.class, GraphQLCodeRegistry.Builder.class,
-                            GraphQLDirective.class, GraphQLEnumType.class, GraphQLEnumValueDefinition.class,
-                            GraphQLFieldDefinition.class, GraphQLInputObjectField.class, GraphQLInputObjectType.class,
-                            GraphQLInterfaceType.class, GraphQLList.class, GraphQLNamedType.class, GraphQLNonNull.class,
-                            GraphQLObjectType.class, GraphQLOutputType.class, GraphQLScalarType.class, GraphQLSchema.class,
-                            GraphQLSchemaElement.class, GraphQLUnionType.class, ImplementingTypeDefinition.class,
-                            InlineFragment.class, InputObjectTypeDefinition.class, InputObjectTypeExtensionDefinition.class,
-                            InputValueDefinition.class, IntValue.class, InterfaceTypeDefinition.class,
-                            InterfaceTypeExtensionDefinition.class, List.class, ListType.class, NodeAdapter.class, NodeZipper.class,
-                            NonNullType.class, NullValue.class, ObjectField.class, ObjectTypeDefinition.class,
-                            ObjectTypeExtensionDefinition.class, ObjectValue.class, OperationDefinition.class,
-                            OperationTypeDefinition.class, ParserOptions.class, QueryVisitorFieldArgumentEnvironment.class,
-                            QueryVisitorFieldArgumentInputValue.class, RootExecutionResultNode.class, ScalarTypeDefinition.class,
-                            ScalarTypeExtensionDefinition.class, SchemaDefinition.class, SchemaExtensionDefinition.class,
-                            SchemaValidationErrorCollector.class, SelectionSet.class, StringValue.class, TypeDefinition.class,
-                            TypeName.class, UnionTypeDefinition.class, UnionTypeExtensionDefinition.class, VariableDefinition.class,
-                            VariableReference.class
-                    ) //
-                    .forEach(aClass -> hints.reflection().registerType(aClass, values));
-        }
-    }
+//    static class GraphqlRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
+//
+//        @Override
+//        public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
+//            var values = MemberCategory.values();
+//            Set.of("graphql", "graphiql", "graph*ql/*.*").forEach(hints.resources()::registerPattern);
+//            Set.of("i18n/Validation.properties", "i18n/Validation", "i18n/Execution.properties", "i18n/General.properties")
+//                    .forEach(r -> hints.resources().registerResourceBundle(r));
+//            Set.of("graphql.analysis.QueryTraversalContext", "graphql.schema.idl.SchemaParseOrder")
+//                    .forEach(typeName -> hints.reflection().registerType(TypeReference.of(typeName), values));
+//            Set.of(
+//                            Argument.class, ArrayValue.class, Boolean.class, BooleanValue.class, DataFetchingEnvironment.class,
+//                            Directive.class, DirectiveDefinition.class, DirectiveLocation.class, Document.class,
+//                            EnumTypeDefinition.class, EnumTypeExtensionDefinition.class, EnumValue.class, EnumValueDefinition.class,
+//                            Execution.class, Field.class, FieldDefinition.class, FloatValue.class, FragmentDefinition.class,
+//                            FragmentSpread.class, GraphQL.class, GraphQLArgument.class, GraphQLCodeRegistry.Builder.class,
+//                            GraphQLDirective.class, GraphQLEnumType.class, GraphQLEnumValueDefinition.class,
+//                            GraphQLFieldDefinition.class, GraphQLInputObjectField.class, GraphQLInputObjectType.class,
+//                            GraphQLInterfaceType.class, GraphQLList.class, GraphQLNamedType.class, GraphQLNonNull.class,
+//                            GraphQLObjectType.class, GraphQLOutputType.class, GraphQLScalarType.class, GraphQLSchema.class,
+//                            GraphQLSchemaElement.class, GraphQLUnionType.class, ImplementingTypeDefinition.class,
+//                            InlineFragment.class, InputObjectTypeDefinition.class, InputObjectTypeExtensionDefinition.class,
+//                            InputValueDefinition.class, IntValue.class, InterfaceTypeDefinition.class,
+//                            InterfaceTypeExtensionDefinition.class, List.class, ListType.class, NodeAdapter.class, NodeZipper.class,
+//                            NonNullType.class, NullValue.class, ObjectField.class, ObjectTypeDefinition.class,
+//                            ObjectTypeExtensionDefinition.class, ObjectValue.class, OperationDefinition.class,
+//                            OperationTypeDefinition.class, ParserOptions.class, QueryVisitorFieldArgumentEnvironment.class,
+//                            QueryVisitorFieldArgumentInputValue.class, RootExecutionResultNode.class, ScalarTypeDefinition.class,
+//                            ScalarTypeExtensionDefinition.class, SchemaDefinition.class, SchemaExtensionDefinition.class,
+//                            SchemaValidationErrorCollector.class, SelectionSet.class, StringValue.class, TypeDefinition.class,
+//                            TypeName.class, UnionTypeDefinition.class, UnionTypeExtensionDefinition.class, VariableDefinition.class,
+//                            VariableReference.class
+//                    ) //
+//                    .forEach(aClass -> hints.reflection().registerType(aClass, values));
+//        }
+//    }
 
 
 }
