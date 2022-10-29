@@ -48,8 +48,6 @@ public class GatewayApplication {
     public static void main(String[] args) {
         SpringApplication.run(GatewayApplication.class, args);
     }
-
-
 }
 
 record Customer(Integer id, String name) {
@@ -65,10 +63,9 @@ class CustomerGraphqlController {
 }
 
 @Configuration
-@RegisterReflectionForBinding ({CustomerGraphqlController.class ,Customer.class})
+@RegisterReflectionForBinding({CustomerGraphqlController.class, Customer.class})
 @ImportRuntimeHints(GraphqlConfiguration.GraphqlRuntimeHintsRegistrar.class)
 class GraphqlConfiguration {
-
 
     static class GraphqlRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
 
