@@ -16,7 +16,6 @@ import org.springframework.aot.hint.MemberCategory;
 import org.springframework.aot.hint.RuntimeHints;
 import org.springframework.aot.hint.RuntimeHintsRegistrar;
 import org.springframework.aot.hint.TypeReference;
-import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.aot.BeanFactoryInitializationAotProcessor;
 import org.springframework.boot.SpringApplication;
@@ -63,9 +62,21 @@ class CustomerGraphqlController {
 }
 
 @Configuration
-@RegisterReflectionForBinding({CustomerGraphqlController.class, Customer.class})
-@ImportRuntimeHints(GraphqlConfiguration.GraphqlRuntimeHintsRegistrar.class)
+@ImportRuntimeHints({GraphqlConfiguration.GraphqlRuntimeHintsRegistrar.class,
+        GraphqlConfiguration.GraphqlControllerRuntimeHintsRegistrar.class})
 class GraphqlConfiguration {
+
+    /**
+     * specific to my GraphQL application
+     */
+    static class GraphqlControllerRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
+
+        @Override
+        public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
+            Set.of(CustomerGraphqlController.class, Customer.class)
+                    .forEach(c -> hints.reflection().registerType(c, MemberCategory.values()));
+        }
+    }
 
     static class GraphqlRuntimeHintsRegistrar implements RuntimeHintsRegistrar {
 
