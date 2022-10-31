@@ -31,7 +31,7 @@ class CustomerGraphqlController {
 
     @QueryMapping
     Collection<Customer> customers() {
-        return List.of(new Customer(1, "Andreas"), new Customer(2, "Rossen"));
+        return java.util.List.of(new Customer(1, "Andreas"), new Customer(2, "Rossen"));
     }
 }
 
@@ -116,7 +116,7 @@ class GraphqlConfiguration {
 //                            graphql.parser.ParserOptions.class,
                             graphql.schema.DataFetchingEnvironment.class,
                             graphql.schema.GraphQLArgument.class,
-                            graphql.schema.GraphQLCodeRegistry.Builder.class,
+//                            graphql.schema.GraphQLCodeRegistry.Builder.class,
                             graphql.schema.GraphQLDirective.class,
                             graphql.schema.GraphQLEnumType.class,
                             graphql.schema.GraphQLEnumValueDefinition.class,
@@ -131,13 +131,13 @@ class GraphqlConfiguration {
                             graphql.schema.GraphQLOutputType.class,
                             graphql.schema.GraphQLScalarType.class,
                             graphql.schema.GraphQLSchema.class,
-                            graphql.schema.GraphQLSchemaElement.class,
-                            graphql.schema.GraphQLUnionType.class,
+//                            graphql.schema.GraphQLSchemaElement.class,
+                            graphql.schema.GraphQLUnionType.class
 //                            graphql.schema.validation.SchemaValidationErrorCollector.class,
 //                            graphql.util.NodeAdapter.class,
 //                            graphql.util.NodeZipper.class,
-                            java.lang.Boolean.class,
-                            java.util.List.class
+//                            java.lang.Boolean.class,
+//                            java.util.List.class
                     ) //
                     .forEach(aClass -> hints.reflection().registerType(aClass, values));
         }
